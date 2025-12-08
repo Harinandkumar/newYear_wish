@@ -482,3 +482,43 @@ button{
   border-radius:12px;
   font-weight:bold;
 }
+/* ✅ VIRAL PROMO CARD */
+.promo-card{
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  margin-top:15px;
+  text-align:center;
+}
+
+.promo-card h2{
+  margin-bottom:8px;
+}
+
+.promo-card p{
+  font-size:14px;
+  opacity:.95;
+}
+
+/* ✅ BIG CTA BUTTON */
+.create-btn{
+  display:block;
+  margin-top:12px;
+  padding:12px;
+  background:#00e676;
+  color:#000;
+  text-decoration:none;
+  border-radius:12px;
+  font-weight:bold;
+}
+
+/* ✅ BETTER WHATSAPP BUTTON (if not added before) */
+.whatsapp-btn{
+  display:block;
+  margin-top:14px;
+  padding:12px;
+  background:#25D366;
+  color:white;
+  text-decoration:none;
+  border-radius:12px;
+  font-weight:bold;
+}
