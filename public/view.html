@@ -17,7 +17,8 @@
 
     <p id="msg"></p>
 
-    <a id="whatsapp" class="whatsapp-btn" target="_blank">
+    <!-- ✅ WHATSAPP BUTTON (ONLY FOR CREATOR) -->
+    <a id="whatsapp" class="whatsapp-btn" target="_blank" style="display:none;">
       📲 Share on WhatsApp
     </a>
   </div>
@@ -36,7 +37,9 @@
   </div>
 
 <script>
-const id = new URLSearchParams(location.search).get("id");
+const params = new URLSearchParams(location.search);
+const id = params.get("id");
+const owner = params.get("owner"); // ✅ owner=1 only for creator
 
 fetch(`/api/wish/${id}`)
   .then(r => r.json())
@@ -51,8 +54,35 @@ fetch(`/api/wish/${id}`)
       photo.style.display = "none";
     }
 
-    whatsapp.href = `https://wa.me/?text=${encodeURIComponent(location.href)}`;
+    // ✅ Sirf CREATOR ko WhatsApp dikhega
+    if(owner === "1"){
+      whatsapp.style.display = "block";
+
+      // ✅ Share link me owner parameter remove hoga
+      const cleanLink = location.href.replace("&owner=1", "");
+      whatsapp.href = `https://wa.me/?text=${encodeURIComponent(cleanLink)}`;
+    }
   });
+</script>
+
+<!-- ✅ AUTO POPUP PROMOTION (10 sec baad) -->
+<div id="popupCTA" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999; align-items:center; justify-content:center;">
+  <div style="background:white; padding:20px; border-radius:16px; text-align:center; max-width:300px;">
+    <h3>💖 Loved this wish?</h3>
+    <p>Now create your own beautiful wish with photo & music!</p>
+    <a href="index.html" style="display:block; margin-top:10px; padding:10px; background:#ff4d6d; color:white; border-radius:10px; text-decoration:none;">
+      💌 Make Your Own Wish
+    </a>
+    <p onclick="document.getElementById('popupCTA').style.display='none'" style="margin-top:10px; font-size:13px; cursor:pointer;">
+      Close
+    </p>
+  </div>
+</div>
+
+<script>
+setTimeout(() => {
+  document.getElementById("popupCTA").style.display = "flex";
+}, 10000);
 </script>
 
 </body>
