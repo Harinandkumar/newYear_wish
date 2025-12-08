@@ -22,7 +22,7 @@ const User = mongoose.model("User", new mongoose.Schema({
   password: String
 }));
 
-// ❌ ✅ NO VIEWS / COUNT FIELD (FINAL)
+// ✅ NO COUNT / NO VIEWS
 const Wish = mongoose.model("Wish", new mongoose.Schema({
   from: String,
   to: String,
@@ -87,7 +87,7 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-// ================= WISH SYSTEM (LOGIN REQUIRED) =================
+// ================= CREATE WISH (LOGIN REQUIRED) =================
 app.post("/api/wish", verifyToken, upload.single("photo"), async (req, res) => {
   try {
     const wish = new Wish({
@@ -106,10 +106,16 @@ app.post("/api/wish", verifyToken, upload.single("photo"), async (req, res) => {
   }
 });
 
-// ✅ SIMPLE FETCH (NO COUNT, NO TRACKING)
+// ================= GET SINGLE WISH =================
 app.get("/api/wish/:id", async (req, res) => {
   const wish = await Wish.findById(req.params.id);
   res.json(wish);
+});
+
+// ================= ✅ MY WISHES (LOGGED-IN USER ONLY) =================
+app.get("/api/my-wishes", verifyToken, async (req, res) => {
+  const wishes = await Wish.find({ userId: req.userId }).sort({ _id: -1 });
+  res.json(wishes);
 });
 
 // ================= ADMIN AUTH =================
@@ -136,7 +142,7 @@ app.delete("/api/admin/wish/:id", async (req, res) => {
   res.json({ success: true });
 });
 
-// ================= ✅ RENDER PRODUCTION PORT FIX =================
+// ================= ✅ RENDER / PRODUCTION PORT =================
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {

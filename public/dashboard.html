@@ -1,29 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
   <title>Create Wish</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<script>
-if (!localStorage.getItem("token")) {
-  location.href = "index.html";
-}
-</script>
+<div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:10px;">
+  <div class="card">
 
-<audio id="bgm" src="bg-music.mp3" loop></audio>
-<button onclick="bgm.play()">🎵 Play Music</button>
+    <h1>Create Your Wish 💖</h1>
 
-<div class="card">
-  <h1>Create Wish 💖</h1>
-  <input id="from" placeholder="Your Name">
-  <input id="to" placeholder="GF/BF Name">
-  <textarea id="message"></textarea>
-  <input type="file" id="photo">
-  <button onclick="createWish()">Generate Wish</button>
-  <p id="result"></p>
+    <input id="from" placeholder="Your Name">
+    <input id="to" placeholder="Receiver Name">
+
+    <!-- ✅ RELATION SELECT -->
+    <select id="relation" onchange="loadWishes()">
+      <option value="">-- Select Relation --</option>
+      <option value="gf">GF 💖</option>
+      <option value="bf">BF 💙</option>
+      <option value="friend">Friend 👫</option>
+      <option value="sister">Sister 👧</option>
+      <option value="brother">Brother 👦</option>
+      <option value="family">Family 👨‍👩‍👧</option>
+      <option value="trending">Trending 🔥</option>
+    </select>
+
+    <!-- ✅ AUTO DESCRIPTION BUTTONS -->
+    <div id="wishList" class="wish-grid"></div>
+
+    <!-- ✅ MANUAL MESSAGE -->
+    <textarea id="message" placeholder="Or write your own wish..." rows="4"></textarea>
+
+    <input type="file" id="photo">
+
+    <button onclick="createWish()">✨ Generate Wish</button>
+
+    <p id="result"></p>
+
+    <hr style="margin:20px 0">
+
+    <h2>📜 My Wishes</h2>
+    <button onclick="loadMyWishes()">🔄 Load My Wishes</button>
+    <div id="myWishes" class="my-wish-grid"></div>
+
+  </div>
 </div>
 
 <script src="script.js"></script>
