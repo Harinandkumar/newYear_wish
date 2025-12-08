@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-body">
+
+<script>
+if(!localStorage.getItem("admin")){
+  location.href = "admin-login.html";
+}
+</script>
+
+<div class="admin-layout">
+
+  <!-- ✅ SIDEBAR -->
+  <div class="admin-sidebar">
+    <h2>👑 Admin</h2>
+    <button onclick="showUsers()">👤 Users</button>
+    <button onclick="showWishes()">💖 Wishes</button>
+    <button onclick="logout()">🚪 Logout</button>
+  </div>
+
+  <!-- ✅ MAIN CONTENT -->
+  <div class="admin-main">
+    <h1 id="adminTitle">Welcome Admin 💼</h1>
+
+    <div id="tableBox"></div>
+  </div>
+
+</div>
+
+<script>
+function showUsers(){
+  document.getElementById("adminTitle").innerText = "All Users";
+  fetch('/api/admin/users')
+    .then(r=>r.json())
+    .then(data=>{
+      let html = `
+        <table class="admin-table">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>ID</th>
+          </tr>
+      `;
+
+      data.forEach(u=>{
+        html += `
+          <tr>
+            <td>${u.name}</td>
+            <td>${u.email}</td>
+            <td>${u._id}</td>
+          </tr>
+        `;
+      });
+
+      html += `</table>`;
+      document.getElementById("tableBox").innerHTML = html;
+    });
+}
+
+function showWishes(){
+  document.getElementById("adminTitle").innerText = "All Wishes";
+  fetch('/api/admin/wishes')
+    .then(r=>r.json())
+    .then(data=>{
+      let html = `
+        <table class="admin-table">
+          <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Message</th>
+            <th>Image</th>
+            <th>Action</th>
+          </tr>
+      `;
+
+      data.forEach(w=>{
+        html += `
+          <tr>
+            <td>${w.from}</td>
+            <td>${w.to}</td>
+            <td>${w.message}</td>
+            <td>
+              ${w.photo ? `<img src="/uploads/${w.photo}" width="50">` : "No Image"}
+            </td>
+            <td>
+              <button class="danger" onclick="deleteWish('${w._id}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += `</table>`;
+      document.getElementById("tableBox").innerHTML = html;
+    });
+}
+
+function deleteWish(id){
+  if(confirm("Delete this wish?")){
+    fetch('/api/admin/wish/' + id,{ method:"DELETE" })
+      .then(r=>r.json())
+      .then(()=>{
+        alert("Deleted Successfully");
+        showWishes();
+      });
+  }
+}
+
+function logout(){
+  localStorage.removeItem("admin");
+  location.href="admin-login.html";
+}
+</script>
+
+</body>
+</html>

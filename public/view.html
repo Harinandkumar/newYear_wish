@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wish</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="fireworks">
+
+<div class="card">
+  <h1 id="title"></h1>
+  <img id="photo" width="200">
+  <p id="msg"></p>
+  <a id="whatsapp" target="_blank">📲 Share on WhatsApp</a>
+</div>
+
+<script>
+const id = new URLSearchParams(location.search).get("id");
+fetch(`/api/wish/${id}`).then(r=>r.json()).then(d=>{
+  title.innerText = `Happy New Year ${d.to} 💖`;
+  msg.innerText = d.message + " — " + d.from;
+  photo.src = d.photo ? `/uploads/${d.photo}` : "";
+  whatsapp.href = `https://wa.me/?text=${encodeURIComponent(location.href)}`;
+});
+</script>
+
+</body>
+</html>

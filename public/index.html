@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | New Year Wish</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+
+<div class="auth-wrapper">
+  <div class="auth-card glass">
+
+    <h1>🎆 New Year Wishes 💖</h1>
+    <p class="tagline">Login & create wish for your love</p>
+
+    <div class="auth-tabs">
+      <button id="loginTab" class="active" onclick="switchTab('login')">Login</button>
+      <button id="registerTab" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <!-- ✅ LOGIN FORM -->
+    <div id="loginForm" class="auth-form">
+      <input id="lemail" type="email" placeholder="Email" required>
+      <input id="lpassword" type="password" placeholder="Password" required>
+      <button onclick="loginUser()">Login</button>
+    </div>
+
+    <!-- ✅ REGISTER FORM -->
+    <div id="registerForm" class="auth-form hidden">
+      <input id="rname" placeholder="Full Name" required>
+      <input id="remail" type="email" placeholder="Email" required>
+      <input id="rpassword" type="password" placeholder="Password" required>
+      <button onclick="registerUser()">Create Account</button>
+    </div>
+
+    <p class="auth-note">Your wish will create magic 💗</p>
+
+  </div>
+</div>
+
+<script>
+function switchTab(tab){
+  loginTab.classList.remove('active');
+  registerTab.classList.remove('active');
+  loginForm.classList.add('hidden');
+  registerForm.classList.add('hidden');
+
+  if(tab === 'login'){
+    loginTab.classList.add('active');
+    loginForm.classList.remove('hidden');
+  } else {
+    registerTab.classList.add('active');
+    registerForm.classList.remove('hidden');
+  }
+}
+
+// ✅ REAL LOGIN (Backend Connected)
+function loginUser(){
+  fetch('/api/login',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      email:lemail.value,
+      password:lpassword.value
+    })
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.token){
+      localStorage.setItem("token", d.token);
+      location.href="dashboard.html";
+    } else {
+      alert("❌ Invalid Login");
+    }
+  });
+}
+
+// ✅ REAL REGISTER (Backend Connected)
+function registerUser(){
+  fetch('/api/register',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      name:rname.value,
+      email:remail.value,
+      password:rpassword.value
+    })
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.success){
+      alert("✅ Account Created! Now Login.");
+      switchTab('login');
+    } else {
+      alert("❌ Registration Failed");
+    }
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Wish</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script>
+if (!localStorage.getItem("token")) {
+  location.href = "index.html";
+}
+</script>
+
+<audio id="bgm" src="bg-music.mp3" loop></audio>
+<button onclick="bgm.play()">🎵 Play Music</button>
+
+<div class="card">
+  <h1>Create Wish 💖</h1>
+  <input id="from" placeholder="Your Name">
+  <input id="to" placeholder="GF/BF Name">
+  <textarea id="message"></textarea>
+  <input type="file" id="photo">
+  <button onclick="createWish()">Generate Wish</button>
+  <p id="result"></p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
