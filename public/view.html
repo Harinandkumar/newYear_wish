@@ -1,27 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wish</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="fireworks">
 
-<div class="card">
-  <h1 id="title"></h1>
-  <img id="photo" width="200">
-  <p id="msg"></p>
-  <a id="whatsapp" target="_blank">📲 Share on WhatsApp</a>
-</div>
+  <div class="card">
+    <h1 id="title"></h1>
+
+    <!-- ✅ RESPONSIVE IMAGE -->
+    <img id="photo" class="wish-photo">
+
+    <p id="msg"></p>
+
+    <!-- ✅ FULL WIDTH WHATSAPP BUTTON -->
+    <a id="whatsapp" class="whatsapp-btn" target="_blank">
+      📲 Share on WhatsApp
+    </a>
+  </div>
 
 <script>
 const id = new URLSearchParams(location.search).get("id");
-fetch(`/api/wish/${id}`).then(r=>r.json()).then(d=>{
-  title.innerText = `Happy New Year ${d.to} 💖`;
-  msg.innerText = d.message + " — " + d.from;
-  photo.src = d.photo ? `/uploads/${d.photo}` : "";
-  whatsapp.href = `https://wa.me/?text=${encodeURIComponent(location.href)}`;
-});
+
+fetch(`/api/wish/${id}`)
+  .then(r => r.json())
+  .then(d => {
+    title.innerText = `Happy New Year ${d.to} 💖`;
+    msg.innerText = d.message + " — " + d.from;
+
+    if(d.photo){
+      photo.src = `/uploads/${d.photo}`;
+      photo.style.display = "block";
+    } else {
+      photo.style.display = "none";
+    }
+
+    whatsapp.href = `https://wa.me/?text=${encodeURIComponent(location.href)}`;
+  });
 </script>
 
 </body>
