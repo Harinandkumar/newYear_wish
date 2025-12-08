@@ -22,6 +22,7 @@ const User = mongoose.model("User", new mongoose.Schema({
   password: String
 }));
 
+// ❌ ✅ NO VIEWS / COUNT FIELD (FINAL)
 const Wish = mongoose.model("Wish", new mongoose.Schema({
   from: String,
   to: String,
@@ -105,8 +106,10 @@ app.post("/api/wish", verifyToken, upload.single("photo"), async (req, res) => {
   }
 });
 
+// ✅ SIMPLE FETCH (NO COUNT, NO TRACKING)
 app.get("/api/wish/:id", async (req, res) => {
-  res.json(await Wish.findById(req.params.id));
+  const wish = await Wish.findById(req.params.id);
+  res.json(wish);
 });
 
 // ================= ADMIN AUTH =================

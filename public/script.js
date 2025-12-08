@@ -1,3 +1,4 @@
+// ✅ REGISTER
 function register(){
  fetch("/api/register",{
   method:"POST",
@@ -13,6 +14,7 @@ function register(){
  });
 }
 
+// ✅ LOGIN
 function login(){
  fetch("/api/login",{
   method:"POST",
@@ -29,8 +31,9 @@ function login(){
  });
 }
 
+// ✅ CREATE WISH (TOKEN SAFE + OWNER LINK)
 function createWish(){
- const fd=new FormData();
+ const fd = new FormData();
  fd.append("from",from.value);
  fd.append("to",to.value);
  fd.append("message",message.value);
@@ -38,9 +41,18 @@ function createWish(){
 
  fetch("/api/wish",{
   method:"POST",
-  headers:{ "authorization": localStorage.getItem("token") },
+  headers:{ 
+    "authorization": localStorage.getItem("token")   // ✅ TOKEN SAFE
+  },
   body:fd
  }).then(r=>r.json()).then(d=>{
-   result.innerHTML=`✅ <a href='${d.link}'>Open Wish</a>`;
+
+   // ✅ CREATOR ke liye special owner link
+   const ownerLink = d.link + "&owner=1";
+
+   result.innerHTML = `
+     ✅ <a href="${ownerLink}">Open Your Wish</a>
+     <br><small>(Only you will see WhatsApp share button)</small>
+   `;
  });
 }

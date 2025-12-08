@@ -1,26 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Wish</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Wish</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="fireworks">
 
-<div class="card">
-  <h1 id="title"></h1>
-  <img id="photo" width="200">
-  <p id="msg"></p>
-  <a id="whatsapp" target="_blank">📲 Share on WhatsApp</a>
+  <!-- ✅ MAIN WISH CARD -->
+  <div class="card">
+    <h1 id="title"></h1>
+
+    <img id="photo" class="wish-photo">
+
+    <p id="msg"></p>
+
+    <!-- ✅ WHATSAPP BUTTON (ONLY FOR CREATOR) -->
+    <a id="whatsapp" class="whatsapp-btn" target="_blank" style="display:none;">
+      📲 Share on WhatsApp
+    </a>
+  </div>
+
+  <!-- ✅ VIRAL PROMOTION CARD -->
+  <div class="card promo-card">
+    <h2>😍 Loved this wish?</h2>
+    <p>
+      Now create a <b>beautiful wish</b> for your GF/BF 💖 <br>
+      Add photo, music & share with love!
+    </p>
+
+    <a href="index.html" class="create-btn">
+      💌 Make Your Own Wish
+    </a>
+  </div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const id = params.get("id");
+const owner = params.get("owner"); // ✅ owner=1 only for creator
+
+fetch(`/api/wish/${id}`)
+  .then(r => r.json())
+  .then(d => {
+    title.innerText = `Happy New Year ${d.to} 💖`;
+    msg.innerText = d.message + " — " + d.from;
+
+    if(d.photo){
+      photo.src = `/uploads/${d.photo}`;
+      photo.style.display = "block";
+    } else {
+      photo.style.display = "none";
+    }
+
+    // ✅ Sirf CREATOR ko WhatsApp dikhega
+    if(owner === "1"){
+      whatsapp.style.display = "block";
+
+      // ✅ Share link me owner parameter remove hoga
+      const cleanLink = location.href.replace("&owner=1", "");
+      whatsapp.href = `https://wa.me/?text=${encodeURIComponent(cleanLink)}`;
+    }
+  });
+</script>
+
+<!-- ✅ AUTO POPUP PROMOTION (10 sec baad) -->
+<div id="popupCTA" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999; align-items:center; justify-content:center;">
+  <div style="background:white; padding:20px; border-radius:16px; text-align:center; max-width:300px;">
+    <h3>💖 Loved this wish?</h3>
+    <p>Now create your own beautiful wish with photo & music!</p>
+    <a href="index.html" style="display:block; margin-top:10px; padding:10px; background:#ff4d6d; color:white; border-radius:10px; text-decoration:none;">
+      💌 Make Your Own Wish
+    </a>
+    <p onclick="document.getElementById('popupCTA').style.display='none'" style="margin-top:10px; font-size:13px; cursor:pointer;">
+      Close
+    </p>
+  </div>
 </div>
 
 <script>
-const id = new URLSearchParams(location.search).get("id");
-fetch(`/api/wish/${id}`).then(r=>r.json()).then(d=>{
-  title.innerText = `Happy New Year ${d.to} 💖`;
-  msg.innerText = d.message + " — " + d.from;
-  photo.src = d.photo ? `/uploads/${d.photo}` : "";
-  whatsapp.href = `https://wa.me/?text=${encodeURIComponent(location.href)}`;
-});
+setTimeout(() => {
+  document.getElementById("popupCTA").style.display = "flex";
+}, 10000);
 </script>
 
 </body>
