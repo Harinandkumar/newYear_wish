@@ -4,25 +4,65 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const cors = require("cors");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
 
 const app = express();
-app.use(express.json());
+
+/* =========================
+   ✅ CSP FIX (INLINE JS + ONCLICK ALLOWED)
+========================= */
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; img-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+  );
+  next();
+});
+
+/* =========================
+   ✅ GLOBAL SECURITY
+========================= */
+app.use(helmet({ contentSecurityPolicy: false })); // CSP hum manually handle kar rahe hain
+app.use(cors());
+app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(mongoSanitize());
+app.use(xss());
+
+// ✅ Rate limit: 100 requests / 10 minutes
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 100
+});
+app.use(limiter);
+
+/* =========================
+   ✅ STATIC FILES
+========================= */
 app.use(express.static("public"));
 app.use("/uploads", express.static("uploads"));
 
-// ✅ MongoDB Connect
+/* =========================
+   ✅ MONGODB CONNECT
+========================= */
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch(err => console.log("❌ MongoDB Error:", err));
 
-// ================= MODELS =================
+/* =========================
+   ✅ MODELS
+========================= */
 const User = mongoose.model("User", new mongoose.Schema({
-  name: String,
-  email: { type: String, unique: true },
-  password: String
+  name: { type: String, required: true },
+  email: { type: String, unique: true, required: true },
+  password: { type: String, required: true }
 }));
 
-// ✅ NO COUNT / NO VIEWS
 const Wish = mongoose.model("Wish", new mongoose.Schema({
   from: String,
   to: String,
@@ -31,15 +71,29 @@ const Wish = mongoose.model("Wish", new mongoose.Schema({
   userId: String
 }));
 
-// ================= MULTER =================
+/* =========================
+   ✅ MULTER (SECURE IMAGE UPLOAD)
+========================= */
 const storage = multer.diskStorage({
   destination: "uploads",
   filename: (req, file, cb) =>
     cb(null, Date.now() + "_" + file.originalname)
 });
-const upload = multer({ storage });
 
-// ================= JWT MIDDLEWARE =================
+const upload = multer({
+  storage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith("image/")) {
+      return cb(new Error("Only image files allowed"));
+    }
+    cb(null, true);
+  }
+});
+
+/* =========================
+   ✅ JWT MIDDLEWARE
+========================= */
 function verifyToken(req, res, next) {
   const token = req.headers["authorization"];
   if (!token) return res.status(403).json({ error: "Login Required" });
@@ -51,15 +105,25 @@ function verifyToken(req, res, next) {
   });
 }
 
-// ================= AUTH SYSTEM =================
+/* =========================
+   ✅ AUTH ROUTES
+========================= */
+
+// ✅ REGISTER
 app.post("/api/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    if (!name || !email || !password)
+      return res.status(400).json({ error: "All fields required" });
+
+    if (password.length < 6)
+      return res.status(400).json({ error: "Password must be at least 6 characters" });
+
     if (await User.findOne({ email }))
       return res.status(400).json({ error: "User already exists" });
 
-    const hash = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(password, 12);
     await new User({ name, email, password: hash }).save();
 
     res.json({ success: true });
@@ -68,6 +132,7 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
+// ✅ LOGIN
 app.post("/api/login", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -87,7 +152,11 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-// ================= CREATE WISH (LOGIN REQUIRED) =================
+/* =========================
+   ✅ WISH ROUTES
+========================= */
+
+// ✅ CREATE WISH (LOGIN REQUIRED)
 app.post("/api/wish", verifyToken, upload.single("photo"), async (req, res) => {
   try {
     const wish = new Wish({
@@ -106,19 +175,22 @@ app.post("/api/wish", verifyToken, upload.single("photo"), async (req, res) => {
   }
 });
 
-// ================= GET SINGLE WISH =================
+// ✅ GET SINGLE WISH (PUBLIC)
 app.get("/api/wish/:id", async (req, res) => {
   const wish = await Wish.findById(req.params.id);
   res.json(wish);
 });
 
-// ================= ✅ MY WISHES (LOGGED-IN USER ONLY) =================
+// ✅ MY WISHES (USER ONLY)
 app.get("/api/my-wishes", verifyToken, async (req, res) => {
   const wishes = await Wish.find({ userId: req.userId }).sort({ _id: -1 });
   res.json(wishes);
 });
 
-// ================= ADMIN AUTH =================
+/* =========================
+   ✅ ADMIN ROUTES
+========================= */
+
 app.post("/api/admin/login", (req, res) => {
   if (
     req.body.email === process.env.ADMIN_EMAIL &&
@@ -128,7 +200,6 @@ app.post("/api/admin/login", (req, res) => {
   res.status(401).json({ error: "Invalid Admin" });
 });
 
-// ================= ADMIN DATA =================
 app.get("/api/admin/users", async (req, res) => {
   res.json(await User.find());
 });
@@ -142,9 +213,11 @@ app.delete("/api/admin/wish/:id", async (req, res) => {
   res.json({ success: true });
 });
 
-// ================= ✅ RENDER / PRODUCTION PORT =================
+/* =========================
+   ✅ PRODUCTION PORT
+========================= */
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`✅ Production Server Running on PORT ${PORT}`);
+  console.log(`✅ Secure Server Running on http://localhost:${PORT}`);
 });
