@@ -136,139 +136,6 @@ button{
   background:#ff4d6d;
 }
 
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-  background:linear-gradient(135deg,#ff4d6d,#ffb3c1);
-  font-family:sans-serif;
-  min-height:100vh;
-  padding:10px;
-}
-
-/* ======================
-   ✅ COMMON CARD
-====================== */
-
-.card{
-  background:white;
-  padding:22px;
-  width:100%;
-  max-width:360px;   /* ✅ FIXED */
-  margin:40px auto;
-  border-radius:16px;
-  text-align:center;
-  box-shadow:0 10px 25px rgba(0,0,0,.4);
-}
-
-input,textarea{
-  width:100%;
-  margin:8px 0;
-  padding:10px;
-  font-size:15px;
-}
-
-button{
-  background:hotpink;
-  border:none;
-  padding:12px;
-  color:white;
-  border-radius:10px;
-  cursor:pointer;
-  width:100%;
-}
-
-/* ======================
-   ✅ FIREWORKS
-====================== */
-
-.fireworks{
-  animation:flash 1s infinite alternate;
-}
-
-@keyframes flash{
-  from{background:black}
-  to{background:#ff1493}
-}
-
-/* ===========================
-   🔐 AUTH PAGE DESIGN
-=========================== */
-
-.auth-body{
-  margin:0;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(135deg,#ff4d6d,#ffb3c1,#8e2de2,#4a00e0);
-  background-size:400% 400%;
-  animation:bg 12s ease infinite;
-  padding:14px;
-}
-
-@keyframes bg{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
-.auth-wrapper{
-  width:100%;
-  display:flex;
-  justify-content:center;
-}
-
-.auth-card{
-  width:100%;            /* ✅ FIXED */
-  max-width:380px;       /* ✅ FIXED */
-  padding:30px 22px;
-  border-radius:22px;
-  text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,.4);
-}
-
-.glass{
-  background:rgba(255,255,255,.18);
-  backdrop-filter:blur(14px);
-  color:#fff;
-}
-
-.auth-card h1{
-  margin-bottom:5px;
-  font-size:22px;
-}
-
-.tagline{
-  font-size:13px;
-  opacity:.9;
-  margin-bottom:18px;
-}
-
-.auth-tabs{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:20px;
-  gap:8px;
-}
-
-.auth-tabs button{
-  width:100%;     /* ✅ FIXED */
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  background:rgba(255,255,255,.25);
-  color:#fff;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.auth-tabs .active{
-  background:#ff4d6d;
-}
-
 .auth-form input{
   width:100%;
   padding:12px;
@@ -318,21 +185,12 @@ button{
 .admin-layout{
   display:flex;
   min-height:100vh;
-<<<<<<< HEAD
   flex-wrap:wrap;
-=======
-  flex-wrap:wrap;   /* ✅ FIXED */
->>>>>>> 391544757b26ab42f618e4e2c193097b9f125908
 }
 
 /* ✅ SIDEBAR */
-
 .admin-sidebar{
-<<<<<<< HEAD
   width:100%;
-=======
-  width:100%;     /* ✅ FIXED FOR MOBILE */
->>>>>>> 391544757b26ab42f618e4e2c193097b9f125908
   max-width:240px;
   background:linear-gradient(180deg,#4a00e0,#8e2de2);
   color:#fff;
@@ -361,7 +219,6 @@ button{
 }
 
 /* ✅ MAIN */
-
 .admin-main{
   flex:1;
   padding:20px;
@@ -379,110 +236,20 @@ button{
   border-collapse:collapse;
   background:#fff;
   border-radius:12px;
-  overflow-x:auto;    /* ✅ FIXED */
-  box-shadow:0 10px 25px rgba(0,0,0,.1);
-  display:block;
-}
-
-.admin-table th{
-  background:#ff4d6d;
-  color:#fff;
-  padding:10px;
-  text-align:left;
-}
-
-.admin-table td{
-  padding:10px;
-  border-bottom:1px solid #eee;
-  font-size:14px;
-}
-
-.admin-table tr:hover{
-  background:#f9f9f9;
-}
-
-.admin-table img{
-  border-radius:6px;
-  max-width:70px;
-}
-
-/* ✅ DELETE BUTTON */
-.danger{
-  background:#ff3333;
-  border:none;
-  color:#fff;
-  padding:6px 12px;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-.danger:hover{
-  background:#cc0000;
-}
-
-/* =========================
-   ✅ EXTRA SMALL MOBILE FIX
-========================= */
-
-@media(max-width:360px){
-  .card,
-  .auth-card{
-    padding:18px;
-  }
-
-  h1{
-    font-size:19px;
-  }
-
-  input, textarea{
-    font-size:14px;
-  }
-
-  button{
-    font-size:14px;
-  }
-}
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.admin-sidebar button:hover{
-  background:#ff4d6d;
-}
-
-/* ✅ MAIN */
-.admin-main{
-  flex:1;
-  padding:30px;
-  width:100%;
-}
-
-.admin-main h1{
-  margin-bottom:20px;
-  color:#333;
-}
-
-/* ✅ TABLE */
-
-.admin-table{
-  width:100%;
-  border-collapse:collapse;
-  background:#fff;
-  border-radius:12px;
-  display:block;
   overflow-x:auto;
   box-shadow:0 10px 25px rgba(0,0,0,.1);
+  display:block;
 }
 
 .admin-table th{
   background:#ff4d6d;
   color:#fff;
-  padding:12px;
+  padding:10px;
   text-align:left;
 }
 
 .admin-table td{
-  padding:12px;
+  padding:10px;
   border-bottom:1px solid #eee;
   font-size:14px;
 }
@@ -497,7 +264,6 @@ button{
 }
 
 /* ✅ DELETE BUTTON */
-
 .danger{
   background:#ff3333;
   border:none;
@@ -510,13 +276,8 @@ button{
 .danger:hover{
   background:#cc0000;
 }
-<<<<<<< HEAD
 
 /* ✅ RESPONSIVE WISH IMAGE */
-
-=======
-/* ✅ RESPONSIVE WISH IMAGE */
->>>>>>> 391544757b26ab42f618e4e2c193097b9f125908
 .wish-photo{
   width:100%;
   max-width:220px;
@@ -525,11 +286,7 @@ button{
   border-radius:12px;
 }
 
-/* ✅ RESPONSIVE WHATSAPP BUTTON */
-<<<<<<< HEAD
-
-=======
->>>>>>> 391544757b26ab42f618e4e2c193097b9f125908
+/* ✅ WHATSAPP BUTTON */
 .whatsapp-btn{
   display:block;
   margin-top:14px;
@@ -540,13 +297,8 @@ button{
   border-radius:12px;
   font-weight:bold;
 }
-<<<<<<< HEAD
 
 /* ✅ VIRAL PROMO CARD */
-
-=======
-/* ✅ VIRAL PROMO CARD */
->>>>>>> 391544757b26ab42f618e4e2c193097b9f125908
 .promo-card{
   background:rgba(255,255,255,.15);
   color:#fff;
@@ -564,10 +316,6 @@ button{
 }
 
 /* ✅ BIG CTA BUTTON */
-<<<<<<< HEAD
-
-=======
->>>>>>> 391544757b26ab42f618e4e2c193097b9f125908
 .create-btn{
   display:block;
   margin-top:12px;
@@ -579,13 +327,11 @@ button{
   font-weight:bold;
 }
 
-<<<<<<< HEAD
 /* =========================
    ✅ EXTRA SMALL MOBILE FIX
 ========================= */
 
 @media(max-width:360px){
-
   .card,
   .auth-card{
     padding:18px;
@@ -602,18 +348,4 @@ button{
   button{
     font-size:14px;
   }
-
 }
-=======
-/* ✅ BETTER WHATSAPP BUTTON (if not added before) */
-.whatsapp-btn{
-  display:block;
-  margin-top:14px;
-  padding:12px;
-  background:#25D366;
-  color:white;
-  text-decoration:none;
-  border-radius:12px;
-  font-weight:bold;
-}
->>>>>>> 391544757b26ab42f618e4e2c193097b9f125908
