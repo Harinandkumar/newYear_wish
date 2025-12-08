@@ -1,112 +1,10 @@
-body{
- background:linear-gradient(135deg,#ff4d6d,#ffb3c1);
- font-family:sans-serif;
-}
-.card{
- background:white;
- padding:25px;
- width:320px;
- margin:100px auto;
- border-radius:16px;
- text-align:center;
- box-shadow:0 10px 25px rgba(0,0,0,.4);
-}
-input,textarea{
- width:100%;
- margin:8px 0;
- padding:8px;
-}
-button{
- background:hotpink;
- border:none;
- padding:10px;
- color:white;
- border-radius:10px;
- cursor:pointer;
-}
-.fireworks{
- animation:flash 1s infinite alternate;
-}
-@keyframes flash{
- from{background:black}
- to{background:#ff1493}
-}
-/* ===========================
-   🔐 AUTH PAGE DESIGN
-=========================== */
-
-.auth-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(135deg,#ff4d6d,#ffb3c1,#8e2de2,#4a00e0);
-  background-size:400% 400%;
-  animation:bg 12s ease infinite;
-  font-family: Arial, sans-serif;
-}
-
-@keyframes bg{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
-.auth-wrapper{
-  width:100%;
-  display:flex;
-  justify-content:center;
-}
-
-.auth-card{
-  width:340px;
-  padding:35px 25px;
-  border-radius:22px;
-  text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,.4);
-}
-
-.glass{
-  background:rgba(255,255,255,.18);
-  backdrop-filter:blur(14px);
-  color:#fff;
-}
-
-.auth-card h1{
-  margin-bottom:5px;
-}
-
-.tagline{
-  font-size:13px;
-  opacity:.9;
-  margin-bottom:18px;
-}
-
-.auth-tabs{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:20px;
-}
-
-.auth-tabs button{
-  width:48%;
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  background:rgba(255,255,255,.25);
-  color:#fff;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.auth-tabs .active{
-  background:#ff4d6d;
-}
-
 *{
   box-sizing:border-box;
 }
+
+/* ======================
+   ✅ BASE BODY
+====================== */
 
 body{
   margin:0;
@@ -124,7 +22,7 @@ body{
   background:white;
   padding:22px;
   width:100%;
-  max-width:360px;   /* ✅ FIXED */
+  max-width:360px;
   margin:40px auto;
   border-radius:16px;
   text-align:center;
@@ -175,6 +73,7 @@ button{
   background-size:400% 400%;
   animation:bg 12s ease infinite;
   padding:14px;
+  font-family: Arial, sans-serif;
 }
 
 @keyframes bg{
@@ -190,8 +89,8 @@ button{
 }
 
 .auth-card{
-  width:100%;            /* ✅ FIXED */
-  max-width:380px;       /* ✅ FIXED */
+  width:100%;
+  max-width:380px;
   padding:30px 22px;
   border-radius:22px;
   text-align:center;
@@ -223,7 +122,7 @@ button{
 }
 
 .auth-tabs button{
-  width:100%;     /* ✅ FIXED */
+  width:100%;
   padding:10px;
   border:none;
   border-radius:10px;
@@ -286,12 +185,13 @@ button{
 .admin-layout{
   display:flex;
   min-height:100vh;
-  flex-wrap:wrap;   /* ✅ FIXED */
+  flex-wrap:wrap;
 }
 
 /* ✅ SIDEBAR */
+
 .admin-sidebar{
-  width:100%;     /* ✅ FIXED FOR MOBILE */
+  width:100%;
   max-width:240px;
   background:linear-gradient(180deg,#4a00e0,#8e2de2);
   color:#fff;
@@ -320,9 +220,10 @@ button{
 }
 
 /* ✅ MAIN */
+
 .admin-main{
   flex:1;
-  padding:20px;
+  padding:30px;
   width:100%;
 }
 
@@ -332,25 +233,26 @@ button{
 }
 
 /* ✅ TABLE */
+
 .admin-table{
   width:100%;
   border-collapse:collapse;
   background:#fff;
   border-radius:12px;
-  overflow-x:auto;    /* ✅ FIXED */
-  box-shadow:0 10px 25px rgba(0,0,0,.1);
   display:block;
+  overflow-x:auto;
+  box-shadow:0 10px 25px rgba(0,0,0,.1);
 }
 
 .admin-table th{
   background:#ff4d6d;
   color:#fff;
-  padding:10px;
+  padding:12px;
   text-align:left;
 }
 
 .admin-table td{
-  padding:10px;
+  padding:12px;
   border-bottom:1px solid #eee;
   font-size:14px;
 }
@@ -365,6 +267,7 @@ button{
 }
 
 /* ✅ DELETE BUTTON */
+
 .danger{
   background:#ff3333;
   border:none;
@@ -378,91 +281,8 @@ button{
   background:#cc0000;
 }
 
-/* =========================
-   ✅ EXTRA SMALL MOBILE FIX
-========================= */
-
-@media(max-width:360px){
-  .card,
-  .auth-card{
-    padding:18px;
-  }
-
-  h1{
-    font-size:19px;
-  }
-
-  input, textarea{
-    font-size:14px;
-  }
-
-  button{
-    font-size:14px;
-  }
-}
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.admin-sidebar button:hover{
-  background:#ff4d6d;
-}
-
-/* ✅ MAIN */
-.admin-main{
-  flex:1;
-  padding:30px;
-}
-
-.admin-main h1{
-  margin-bottom:20px;
-  color:#333;
-}
-
-/* ✅ TABLE */
-.admin-table{
-  width:100%;
-  border-collapse:collapse;
-  background:#fff;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 10px 25px rgba(0,0,0,.1);
-}
-
-.admin-table th{
-  background:#ff4d6d;
-  color:#fff;
-  padding:12px;
-  text-align:left;
-}
-
-.admin-table td{
-  padding:12px;
-  border-bottom:1px solid #eee;
-}
-
-.admin-table tr:hover{
-  background:#f9f9f9;
-}
-
-.admin-table img{
-  border-radius:6px;
-}
-
-/* ✅ DELETE BUTTON */
-.danger{
-  background:#ff3333;
-  border:none;
-  color:#fff;
-  padding:6px 12px;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-.danger:hover{
-  background:#cc0000;
-}
 /* ✅ RESPONSIVE WISH IMAGE */
+
 .wish-photo{
   width:100%;
   max-width:220px;
@@ -472,6 +292,7 @@ button{
 }
 
 /* ✅ RESPONSIVE WHATSAPP BUTTON */
+
 .whatsapp-btn{
   display:block;
   margin-top:14px;
@@ -482,7 +303,9 @@ button{
   border-radius:12px;
   font-weight:bold;
 }
+
 /* ✅ VIRAL PROMO CARD */
+
 .promo-card{
   background:rgba(255,255,255,.15);
   color:#fff;
@@ -500,6 +323,7 @@ button{
 }
 
 /* ✅ BIG CTA BUTTON */
+
 .create-btn{
   display:block;
   margin-top:12px;
@@ -511,14 +335,27 @@ button{
   font-weight:bold;
 }
 
-/* ✅ BETTER WHATSAPP BUTTON (if not added before) */
-.whatsapp-btn{
-  display:block;
-  margin-top:14px;
-  padding:12px;
-  background:#25D366;
-  color:white;
-  text-decoration:none;
-  border-radius:12px;
-  font-weight:bold;
+/* =========================
+   ✅ EXTRA SMALL MOBILE FIX
+========================= */
+
+@media(max-width:360px){
+
+  .card,
+  .auth-card{
+    padding:18px;
+  }
+
+  h1{
+    font-size:19px;
+  }
+
+  input, textarea{
+    font-size:14px;
+  }
+
+  button{
+    font-size:14px;
+  }
+
 }
