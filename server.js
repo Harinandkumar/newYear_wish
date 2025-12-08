@@ -10,7 +10,10 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use("/uploads", express.static("uploads"));
 
-mongoose.connect(process.env.MONGO_URI);
+// ✅ MongoDB Connect
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch(err => console.log("❌ MongoDB Error:", err));
 
 // ================= MODELS =================
 const User = mongoose.model("User", new mongoose.Schema({
@@ -49,35 +52,57 @@ function verifyToken(req, res, next) {
 
 // ================= AUTH SYSTEM =================
 app.post("/api/register", async (req, res) => {
-  const { name, email, password } = req.body;
-  if (await User.findOne({ email }))
-    return res.status(400).json({ error: "User already exists" });
+  try {
+    const { name, email, password } = req.body;
 
-  const hash = await bcrypt.hash(password, 10);
-  await new User({ name, email, password: hash }).save();
-  res.json({ success: true });
+    if (await User.findOne({ email }))
+      return res.status(400).json({ error: "User already exists" });
+
+    const hash = await bcrypt.hash(password, 10);
+    await new User({ name, email, password: hash }).save();
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: "Register Failed" });
+  }
 });
 
 app.post("/api/login", async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (!user || !await bcrypt.compare(req.body.password, user.password))
-    return res.status(401).json({ error: "Invalid Login" });
+  try {
+    const user = await User.findOne({ email: req.body.email });
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
-  res.json({ token });
+    if (!user || !await bcrypt.compare(req.body.password, user.password))
+      return res.status(401).json({ error: "Invalid Login" });
+
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.json({ token });
+  } catch (err) {
+    res.status(500).json({ error: "Login Failed" });
+  }
 });
 
 // ================= WISH SYSTEM (LOGIN REQUIRED) =================
 app.post("/api/wish", verifyToken, upload.single("photo"), async (req, res) => {
-  const wish = new Wish({
-    from: req.body.from,
-    to: req.body.to,
-    message: req.body.message,
-    photo: req.file?.filename,
-    userId: req.userId
-  });
-  await wish.save();
-  res.json({ link: `/view.html?id=${wish._id}` });
+  try {
+    const wish = new Wish({
+      from: req.body.from,
+      to: req.body.to,
+      message: req.body.message,
+      photo: req.file?.filename,
+      userId: req.userId
+    });
+
+    await wish.save();
+    res.json({ link: `/view.html?id=${wish._id}` });
+
+  } catch (err) {
+    res.status(500).json({ error: "Wish Create Failed" });
+  }
 });
 
 app.get("/api/wish/:id", async (req, res) => {
@@ -90,6 +115,7 @@ app.post("/api/admin/login", (req, res) => {
     req.body.email === process.env.ADMIN_EMAIL &&
     req.body.password === process.env.ADMIN_PASS
   ) return res.json({ success: true });
+
   res.status(401).json({ error: "Invalid Admin" });
 });
 
@@ -107,6 +133,9 @@ app.delete("/api/admin/wish/:id", async (req, res) => {
   res.json({ success: true });
 });
 
-app.listen(3000, () =>
-  console.log("✅ Production Server Running http://localhost:3000")
-);
+// ================= ✅ RENDER PRODUCTION PORT FIX =================
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`✅ Production Server Running on PORT ${PORT}`);
+});
