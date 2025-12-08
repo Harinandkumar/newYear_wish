@@ -462,3 +462,23 @@ button{
 .danger:hover{
   background:#cc0000;
 }
+/* ✅ RESPONSIVE WISH IMAGE */
+.wish-photo{
+  width:100%;
+  max-width:220px;
+  margin:12px auto;
+  display:block;
+  border-radius:12px;
+}
+
+/* ✅ RESPONSIVE WHATSAPP BUTTON */
+.whatsapp-btn{
+  display:block;
+  margin-top:14px;
+  padding:12px;
+  background:#25D366;
+  color:white;
+  text-decoration:none;
+  border-radius:12px;
+  font-weight:bold;
+}
