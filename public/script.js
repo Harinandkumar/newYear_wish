@@ -58,25 +58,27 @@ function loadWishes(){
 
 // ✅ CREATE WISH (TOKEN SAFE + OWNER LINK)
 function createWish(){
- const fd = new FormData();
- fd.append("from", from.value);
- fd.append("to", to.value);
- fd.append("message", message.value);
- fd.append("photo", photo?.files[0]);
+  const fd = new FormData();
+  fd.append("from", from.value);
+  fd.append("to", to.value);
+  fd.append("message", message.value);
+  fd.append("photo", photo?.files[0]);
 
- fetch("/api/wish",{
-  method:"POST",
-  headers:{ 
-    "authorization": localStorage.getItem("token")
-  },
-  body:fd
- }).then(r=>r.json()).then(d=>{
-   const ownerLink = d.link + "&owner=1";
-   result.innerHTML = `✅ <a href='${ownerLink}'>Open Your Wish</a>`;
- });
+  fetch("/api/wish",{
+    method:"POST",
+    headers:{ 
+      "authorization": localStorage.getItem("token")
+    },
+    body:fd
+  })
+  .then(r => r.json())
+  .then(d => {
+    const ownerLink = d.link + "&owner=1";
+    result.innerHTML = `✅ <a href='${ownerLink}'>Open Your Wish</a>`;
+  });
 }
 
-// ✅ ✅ BEAUTIFUL MY WISHES CARD VIEW
+// ✅ ✅ BEAUTIFUL MY WISHES CARD VIEW (NO AUTO SCROLL)
 function loadMyWishes(){
   fetch("/api/my-wishes", {
     headers:{
@@ -87,6 +89,8 @@ function loadMyWishes(){
   .then(data => {
     const box = document.getElementById("myWishes");
     box.innerHTML = "";
+
+    // ✅ YAHAN KOI scrollTo() NAHI HAI — PAGE FULL FREE SCROLLABLE ✅
 
     if(data.length === 0){
       box.innerHTML = "<p style='text-align:center;'>No wishes created yet 😢</p>";
