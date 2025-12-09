@@ -2,28 +2,109 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Love Wish</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ✅ SAME GLASS + THEME CSS -->
+  <style>
+    :root {
+      --accent-1: #ff4d6d;
+      --accent-2: #ff7a9c;
+      --bg-grad-a: 255,77,109;
+      --bg-grad-b: 255,154,158;
+      --glass-bg: rgba(255,255,255,0.55);
+      --glass-border: rgba(255,255,255,0.45);
+      --text-primary: #222;
+      --muted: #555;
+      --shadow: 0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg,
+        rgba(var(--bg-grad-a),0.95),
+        rgba(var(--bg-grad-b),0.95)
+      );
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: Poppins, sans-serif;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 360px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      backdrop-filter: blur(10px);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      color: var(--accent-1);
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .wish-photo {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;      /* ✅ IMAGE OVERFLOW FIX */
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    #msg {
+      font-size: 14px;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .whatsapp-btn,
+    .create-btn {
+      display: block;
+      padding: 10px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .promo-card h2 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: var(--accent-1);
+    }
+
+    .promo-card p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+  </style>
 </head>
 
-<body class="fireworks">
+<body>
 
   <!-- ✅ MAIN WISH CARD -->
   <div class="card">
     <h1 id="title"></h1>
-
     <img id="photo" class="wish-photo">
-
     <p id="msg"></p>
 
-    <!-- ✅ WHATSAPP BUTTON (ONLY FOR CREATOR) -->
     <a id="whatsapp" class="whatsapp-btn" target="_blank" style="display:none;">
       📲 Share on WhatsApp
     </a>
   </div>
 
-  <!-- ✅ VIRAL PROMOTION CARD -->
+  <!-- ✅ PROMO CARD -->
   <div class="card promo-card">
     <h2>😍 Loved this wish?</h2>
     <p>
@@ -39,7 +120,7 @@
 <script>
 const params = new URLSearchParams(location.search);
 const id = params.get("id");
-const owner = params.get("owner"); // ✅ owner=1 only for creator
+const owner = params.get("owner");
 
 fetch(`/api/wish/${id}`)
   .then(r => r.json())
@@ -54,18 +135,15 @@ fetch(`/api/wish/${id}`)
       photo.style.display = "none";
     }
 
-    // ✅ Sirf CREATOR ko WhatsApp dikhega
     if(owner === "1"){
       whatsapp.style.display = "block";
-
-      // ✅ Share link me owner parameter remove hoga
       const cleanLink = location.href.replace("&owner=1", "");
       whatsapp.href = `https://wa.me/?text=${encodeURIComponent(cleanLink)}`;
     }
   });
 </script>
 
-<!-- ✅ AUTO POPUP PROMOTION (10 sec baad) -->
+<!-- ✅ AUTO POPUP PROMOTION -->
 <div id="popupCTA" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999; align-items:center; justify-content:center;">
   <div style="background:white; padding:20px; border-radius:16px; text-align:center; max-width:300px;">
     <h3>💖 Loved this wish?</h3>
