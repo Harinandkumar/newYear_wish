@@ -19,6 +19,17 @@
       --shadow: 0 15px 40px rgba(0,0,0,0.18);
     }
 
+    /* ✅ DARK THEME */
+    body.dark {
+      --bg-grad-a: 20,20,30;
+      --bg-grad-b: 40,40,60;
+      --glass-bg: rgba(20,20,30,0.7);
+      --glass-border: rgba(255,255,255,0.12);
+      --text-primary: #fff;
+      --muted: #ccc;
+      --wish-bg: rgba(255,255,255,0.08);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -36,6 +47,7 @@
       align-items: flex-start;
       justify-content: center;
       padding: 20px;
+      transition: 0.3s;
     }
 
     .card {
@@ -60,6 +72,16 @@
       gap:12px;
       margin-bottom: 14px;
       flex-shrink: 0;
+    }
+
+    .theme-btn {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: white;
+      font-size: 12px;
+      cursor: pointer;
     }
 
     .form-controls {
@@ -116,7 +138,7 @@
       margin: 10px 0;
     }
 
-    /* ✅ ✅ ✅ FINAL CORE FIX */
+    /* ✅ ONLY THIS AREA SCROLLS */
     #myWishes {
       flex: 1;
       overflow-y: auto;
@@ -143,8 +165,60 @@
 
     <div class="card-header">
       <h1>Create Your Wish 💖</h1>
+      <button class="theme-btn" onclick="toggleTheme()">🌙 Theme</button>
     </div>
 
+    <div class="form-controls">
+      <input id="from" placeholder="Your Name">
+      <input id="to" placeholder="Receiver Name">
+
+      <select id="relation" onchange="loadWishes()">
+        <option value="">-- Select Relation --</option>
+        <option value="gf">GF 💖</option>
+        <option value="bf">BF 💙</option>
+        <option value="friend">Friend 👫</option>
+        <option value="sister">Sister 👧</option>
+        <option value="brother">Brother 👦</option>
+        <option value="family">Family 👨‍👩‍👧</option>
+        <option value="trending">Trending 🔥</option>
+      </select>
+
+      <div id="wishList" class="wish-grid"></div>
+
+      <textarea id="message" placeholder="Or write your own wish..." rows="3"></textarea>
+
+      <input type="file" id="photo">
+
+      <button class="primary-btn" onclick="createWish()">✨ Generate Wish</button>
+
+      <p id="result"></p>
+    </div>
+
+    <hr>
+
+    <button class="primary-btn" onclick="loadMyWishes()">🔄 Load My Wishes</button>
+
+    <div id="myWishes" class="my-wish-grid"></div>
+
+  </div>
+
+  <!-- ✅ THEME SCRIPT (SAFE) -->
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+    }
+
+    // ✅ Load saved theme
+    if(localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+    }
+  </script>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
     <div class="form-controls">
       <input id="from" placeholder="Your Name">
       <input id="to" placeholder="Receiver Name">
