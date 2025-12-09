@@ -120,7 +120,7 @@
   <!-- ✅ MAIN WISH CARD -->
   <div class="card" id="capture">
     <h1 id="title"></h1>
-    <img id="photo" class="wish-photo">
+    <img id="photo" class="wish-photo" crossorigin="anonymous">
     <p id="msg"></p>
 
     <span class="watermark">Made with ❤️ by Wish App</span>
@@ -192,15 +192,32 @@ setTimeout(() => {
 }, 10000);
 </script>
 
-<!-- ✅ DOWNLOAD IMAGE -->
+<!-- ✅ DOWNLOAD IMAGE (100% FIXED) -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 <script>
 function downloadImage(){
-  html2canvas(document.getElementById("capture")).then(canvas => {
-    const link = document.createElement("a");
-    link.download = "wish.png";
-    link.href = canvas.toDataURL();
-    link.click();
+  const target = document.getElementById("capture");
+
+  html2canvas(target, {
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: null,
+    scale: 2
+  }).then(canvas => {
+    canvas.toBlob(function(blob){
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "wish.png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }).catch(err => {
+    alert("Download failed. Please try again.");
+    console.error("Download Error:", err);
   });
 }
 </script>
