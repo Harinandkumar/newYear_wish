@@ -5,21 +5,12 @@
   <title>Create Wish</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- INLINE PRO UI + GLASSMORPHISM CSS + THEME VARIABLES -->
   <style>
-    /* ----------------------------
-       THEME VARIABLES (two themes)
-       ---------------------------- */
     :root {
-      /* primary accents */
       --accent-1: #ff4d6d;
       --accent-2: #ff7a9c;
-
-      /* background gradient (light) */
-      --bg-grad-a: 255,77,109; /* rgb components */
+      --bg-grad-a: 255,77,109;
       --bg-grad-b: 255,154,158;
-
-      /* card / glass */
       --glass-bg: rgba(255,255,255,0.55);
       --glass-border: rgba(255,255,255,0.45);
       --text-primary: #222;
@@ -28,123 +19,171 @@
       --shadow: 0 15px 40px rgba(0,0,0,0.18);
     }
 
-    /* Dark Theme overrides */
-    body[data-theme="dark"] {
-      --accent-1: #7c4dff;
-      --accent-2: #4da6ff;
-      --bg-grad-a: 44, 33, 77;
-      --bg-grad-b: 30, 45, 86;
-      --glass-bg: rgba(10,12,18,0.45);
-      --glass-border: rgba(255,255,255,0.06);
-      --text-primary: #f3f4f6;
-      --muted: #bfc7da;
-      --wish-bg: rgba(255,255,255,0.03);
-      --shadow: 0 12px 30px rgba(4,6,12,0.6);
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Poppins, sans-serif;
     }
-
-    /* ----------------------------
-       Reset + base
-       ---------------------------- */
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
-    html,body { height: 100%; }
 
     body {
       min-height: 100vh;
-      /* dynamic gradient using CSS variables */
       background: linear-gradient(135deg,
         rgba(var(--bg-grad-a),0.95),
         rgba(var(--bg-grad-b),0.95)
       );
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       padding: 20px;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      transition: background 300ms ease;
     }
 
-    /* soft decorative radial glow behind card */
-    body::before{
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      background: radial-gradient(800px 400px at 10% 10%, rgba(255,255,255,0.06), transparent 10%),
-                  radial-gradient(600px 300px at 90% 90%, rgba(0,0,0,0.06), transparent 12%);
-      pointer-events: none;
-      mix-blend-mode: overlay;
-    }
-
-    /* ----------------------------
-       Card (glassmorphism)
-       ---------------------------- */
     .card {
-      position: relative;
-      z-index: 1;
       width: 100%;
       max-width: 480px;
+      max-height: 95vh;
       padding: 26px;
       border-radius: 16px;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(10px) saturate(120%);
-      -webkit-backdrop-filter: blur(10px) saturate(120%);
       color: var(--text-primary);
-      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
-    /* subtle glossy stripe */
-    .card::after {
-      content: "";
-      position: absolute;
-      left: -40%;
-      top: -30%;
-      width: 180%;
-      height: 60%;
-      background: linear-gradient(120deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
-      transform: rotate(-18deg);
-      pointer-events: none;
-    }
-
-    /* heading area */
     .card-header {
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
       margin-bottom: 14px;
+      flex-shrink: 0;
     }
 
-    .card h1 {
-      font-size:20px;
-      font-weight:700;
-      color: var(--accent-1);
-      display:flex;
-      align-items:center;
-      gap:8px;
+    .form-controls {
+      display: grid;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
-    /* THEME TOG GLASS SWITCH */
-    .theme-toggle {
-      display:flex;
-      align-items:center;
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.06);
+      font-size:14px;
+    }
+
+    .primary-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 13px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .wish-grid, .my-wish-grid {
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
       gap:10px;
+      margin-top:10px;
     }
 
-    .toggle-label {
-      font-size:12px;
-      color:var(--muted);
+    .my-wish-card {
+      background: var(--wish-bg);
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .switch {
-      position: relative;
-      width:46px;
-      height:26px;
-      background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(255,255,255,0.02));
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.06);
+    .my-wish-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    hr {
+      margin: 10px 0;
+    }
+
+    /* ✅ ✅ ✅ FINAL CORE FIX */
+    #myWishes {
+      flex: 1;
+      overflow-y: auto;
+      margin-top: 12px;
+      padding-right: 6px;
+    }
+
+    @media (max-width: 520px) {
+      .card {
+        padding: 18px;
+        max-height: 97vh;
+      }
+
+      .wish-grid, .my-wish-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <div class="card-header">
+      <h1>Create Your Wish 💖</h1>
+    </div>
+
+    <div class="form-controls">
+      <input id="from" placeholder="Your Name">
+      <input id="to" placeholder="Receiver Name">
+
+      <select id="relation" onchange="loadWishes()">
+        <option value="">-- Select Relation --</option>
+        <option value="gf">GF 💖</option>
+        <option value="bf">BF 💙</option>
+        <option value="friend">Friend 👫</option>
+        <option value="sister">Sister 👧</option>
+        <option value="brother">Brother 👦</option>
+        <option value="family">Family 👨‍👩‍👧</option>
+        <option value="trending">Trending 🔥</option>
+      </select>
+
+      <div id="wishList" class="wish-grid"></div>
+
+      <textarea id="message" placeholder="Or write your own wish..." rows="3"></textarea>
+
+      <input type="file" id="photo">
+
+      <button class="primary-btn" onclick="createWish()">✨ Generate Wish</button>
+
+      <p id="result"></p>
+    </div>
+
+    <hr>
+
+    <button class="primary-btn" onclick="loadMyWishes()">🔄 Load My Wishes</button>
+
+    <!-- ✅ ✅ ✅ ONLY THIS AREA SCROLLS -->
+    <div id="myWishes" class="my-wish-grid"></div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>      border:1px solid rgba(255,255,255,0.06);
       display:inline-flex;
       align-items:center;
       padding:3px;
