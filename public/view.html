@@ -175,9 +175,8 @@ fetch(`/api/wish/${id}`)
 <!-- ✅ FALLBACK IMAGE -->
 <script>
 function loadFallbackImage(){
-  const fallbackUrl = "https://images.unsplash.com/photo-1759107548351-6d11fdc5e430?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8MjAyNnxlbnwwfHwwfHx8MA%3D%3D";
   const img = document.getElementById("photo");
-  img.src = fallbackUrl;
+  img.src = "/defaultimage.jpg";  // ✔️ your static image
 }
 </script>
 
