@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <title>Wish</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- ✅ Glass UI -->
+
+  <!-- ✅ Glass UI -->
   <style>
     :root {
       --accent-1: #ff4d6d;
@@ -31,6 +32,13 @@
       padding: 20px;
       font-family: Poppins, sans-serif;
       overflow: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .card {
@@ -107,10 +115,12 @@
 
 <body>
 
+<canvas id="fireworks"></canvas>
+
   <!-- ✅ MAIN WISH CARD -->
   <div class="card" id="capture">
     <h1 id="title"></h1>
-    <img id="photo" class="wish-photo" crossorigin="anonymous">
+    <img id="photo" class="wish-photo" crossorigin="anonymous" onerror="loadFallbackImage()">
     <p id="msg"></p>
 
     <span class="watermark">Made with ❤️ by Wish App</span>
@@ -135,6 +145,7 @@
     </a>
   </div>
 
+<!-- ✅ FETCH DATA -->
 <script>
 const params = new URLSearchParams(location.search);
 const id = params.get("id");
@@ -150,7 +161,7 @@ fetch(`/api/wish/${id}`)
       photo.src = `/uploads/${d.photo}`;
       photo.style.display = "block";
     } else {
-      photo.style.display = "none";
+      loadFallbackImage();
     }
 
     if(owner === "1"){
@@ -161,28 +172,35 @@ fetch(`/api/wish/${id}`)
   });
 </script>
 
+<!-- ✅ FALLBACK IMAGE -->
+<script>
+function loadFallbackImage(){
+  const fallbackUrl = "https://source.unsplash.com/600x400/?newyear,celebration,love";
+  const img = document.getElementById("photo");
+  img.src = fallbackUrl;
+}
+</script>
+
+<!-- ✅ CSP SAFE DOWNLOAD -->
 <script>
 function downloadImage(){
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
   canvas.width = 360;
-  canvas.height = 420;
+  canvas.height = 440;
 
   const img = document.getElementById("photo");
   const titleText = document.getElementById("title").innerText;
   const msgText = document.getElementById("msg").innerText;
 
-  // background
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // title
   ctx.fillStyle = "#ff4d6d";
   ctx.font = "bold 18px Arial";
   ctx.fillText(titleText, 20, 30);
 
-  // image
   if(img && img.src){
     const photoImg = new Image();
     photoImg.crossOrigin = "anonymous";
@@ -191,21 +209,16 @@ function downloadImage(){
     photoImg.onload = function(){
       ctx.drawImage(photoImg, 20, 45, 320, 200);
 
-      // message
       ctx.fillStyle = "#222";
       ctx.font = "14px Arial";
       wrapText(ctx, msgText, 20, 270, 320, 18);
 
-      // watermark
       ctx.fillStyle = "rgba(0,0,0,0.4)";
       ctx.font = "11px Arial";
-      ctx.fillText("Made with ❤️ by Wish App", 90, 400);
+      ctx.fillText("Made with ❤️ by Wish App", 90, 420);
 
       saveCanvas(canvas);
     };
-  } else {
-    wrapText(ctx, msgText, 20, 60, 320, 18);
-    saveCanvas(canvas);
   }
 }
 
@@ -239,6 +252,64 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
   }
   ctx.fillText(line, x, y);
 }
+</script>
+
+<!-- ✅ AUTO POPUP PROMOTION -->
+<div id="popupCTA" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999; align-items:center; justify-content:center;">
+  <div style="background:white; padding:20px; border-radius:16px; text-align:center; max-width:300px;">
+    <h3>💖 Loved this wish?</h3>
+    <p>Now create your own beautiful wish with photo & music!</p>
+    <a href="index.html" style="display:block; margin-top:10px; padding:10px; background:#ff4d6d; color:white; border-radius:10px; text-decoration:none;">
+      💌 Make Your Own Wish
+    </a>
+    <p onclick="document.getElementById('popupCTA').style.display='none'" style="margin-top:10px; font-size:13px; cursor:pointer;">
+      Close
+    </p>
+  </div>
+</div>
+
+<script>
+setTimeout(() => {
+  document.getElementById("popupCTA").style.display = "flex";
+}, 10000);
+</script>
+
+<!-- ✅ FIREWORKS -->
+<script>
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+let particles = [];
+
+function createFirework(){
+  for(let i=0;i<80;i++){
+    particles.push({
+      x: innerWidth/2,
+      y: innerHeight/2,
+      vx: (Math.random()-0.5)*8,
+      vy: (Math.random()-0.5)*8,
+      life: 100
+    });
+  }
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,index)=>{
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+    ctx.fillStyle = "white";
+    ctx.fillRect(p.x,p.y,3,3);
+    if(p.life<=0) particles.splice(index,1);
+  });
+  requestAnimationFrame(animate);
+}
+
+setInterval(createFirework,1500);
+animate();
 </script>
 
 </body>
