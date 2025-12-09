@@ -92,7 +92,7 @@
       backdrop-filter: blur(10px) saturate(120%);
       -webkit-backdrop-filter: blur(10px) saturate(120%);
       color: var(--text-primary);
-      overflow: hidden;
+      overflow: visible;
     }
 
     /* subtle glossy stripe */
@@ -218,7 +218,7 @@
 .my-wish-card img {
   width: 100%;
   height: 180px;
-  object-fit: cover;     /* ✅ IMAGE OVERFLOW FIX */
+  object-fit: cover;
   border-radius: 10px;
 }
 
@@ -246,7 +246,6 @@
   font-size: 13px;
 }
 
-    /* main button */
     .primary-btn {
       width: 100%;
       margin-top: 8px;
@@ -264,10 +263,8 @@
     .primary-btn:active { transform: translateY(1px); }
     .primary-btn:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.18); }
 
-    /* result text */
     #result { margin-top:10px; font-weight:600; color: #22c55e; font-size:14px; min-height:18px; }
 
-    /* wish-grid */
     .wish-grid, .my-wish-grid {
       display:grid;
       grid-template-columns: repeat(2, 1fr);
@@ -301,17 +298,22 @@
 
     .muted { font-size:13px; color:var(--muted); }
 
-    /* small helpers */
     .row { display:flex; gap:10px; align-items:center; }
     .flex { display:flex; gap:10px; }
 
-    /* responsive adjustments */
     @media (max-width:520px){
       .card { padding:18px; border-radius:14px; }
       .wish-grid, .my-wish-grid { grid-template-columns: 1fr; }
       .card h1 { font-size:18px; }
       .primary-btn { font-size:15px; padding:12px; }
       .theme-toggle { gap:8px; }
+    }
+
+    /* ✅ ONLY WISH HISTORY SCROLLABLE */
+    #myWishes {
+      max-height: 45vh;
+      overflow-y: auto;
+      padding-right: 6px;
     }
   </style>
 </head>
@@ -320,7 +322,6 @@
   <div style="min-height:100vh; display:flex; align-items:flex-start; justify-content:center; padding:10px;">
     <div class="card">
 
-      <!-- header with theme toggle -->
       <div class="card-header">
         <h1>Create Your Wish 💖</h1>
 
@@ -332,12 +333,10 @@
         </div>
       </div>
 
-      <!-- form -->
       <div class="form-controls">
         <input id="from" placeholder="Your Name">
         <input id="to" placeholder="Receiver Name">
 
-        <!-- RELATION SELECT -->
         <select id="relation" onchange="loadWishes()">
           <option value="">-- Select Relation --</option>
           <option value="gf">GF 💖</option>
@@ -349,10 +348,8 @@
           <option value="trending">Trending 🔥</option>
         </select>
 
-        <!-- AUTO DESCRIPTION BUTTONS -->
         <div id="wishList" class="wish-grid" aria-live="polite"></div>
 
-        <!-- MANUAL MESSAGE -->
         <textarea id="message" placeholder="Or write your own wish..." rows="4"></textarea>
 
         <input type="file" id="photo" aria-label="Upload photo">
@@ -375,17 +372,12 @@
     </div>
   </div>
 
-  <!-- Inline small script to handle theme toggle + persistence
-       This script DOES NOT modify or call your existing functions (except safe DOM reads).
-       It only toggles data-theme on <body> and sets the UI of the switch.
-  -->
   <script>
     (function(){
-      const THEME_KEY = "wish_app_theme_v1"; // versioned key (safe)
+      const THEME_KEY = "wish_app_theme_v1";
       const switchEl = document.getElementById("themeSwitch");
       const body = document.body;
 
-      // apply theme function
       function applyTheme(theme){
         if(theme === "dark"){
           body.setAttribute("data-theme","dark");
@@ -398,19 +390,16 @@
         }
       }
 
-      // read saved preference (if any) or use prefers-color-scheme
       let saved = null;
       try { saved = localStorage.getItem(THEME_KEY); } catch(e){ saved = null; }
 
       if(saved === "dark" || saved === "light"){
         applyTheme(saved);
       } else {
-        // default: follow user's system preference
         const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         applyTheme(prefersDark ? "dark" : "light");
       }
 
-      // toggle function (also persist)
       function toggleTheme(){
         const current = body.getAttribute("data-theme") === "dark" ? "dark" : "light";
         const next = current === "dark" ? "light" : "dark";
@@ -418,13 +407,11 @@
         try { localStorage.setItem(THEME_KEY, next); } catch(e){}
       }
 
-      // click & keyboard accessibility
       switchEl.addEventListener("click", toggleTheme);
       switchEl.addEventListener("keydown", (e)=>{
         if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggleTheme(); }
       });
 
-      // expose for debugging (no override)
       window.__wishAppTheme = {
         get: () => body.getAttribute("data-theme") || "light",
         set: (t) => { if(t==="dark"||t==="light"){ applyTheme(t); try{ localStorage.setItem(THEME_KEY,t);}catch(e){} } }
@@ -432,7 +419,6 @@
     })();
   </script>
 
-  <!-- your existing script (kept unchanged) -->
   <script src="script.js"></script>
 </body>
 </html>
