@@ -218,6 +218,80 @@
   <script src="script.js"></script>
 
 </body>
+</html>    }
+
+    @media (max-width: 520px) {
+      .card {
+        padding: 18px;
+        max-height: 97vh;
+      }
+
+      .wish-grid, .my-wish-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <div class="card-header">
+      <h1>Create Your Wish 💖</h1>
+      <button class="theme-btn" onclick="toggleTheme()">🌙 Theme</button>
+    </div>
+
+    <div class="form-controls">
+      <input id="from" placeholder="Your Name">
+      <input id="to" placeholder="Receiver Name">
+
+      <select id="relation" onchange="loadWishes()">
+        <option value="">-- Select Relation --</option>
+        <option value="gf">GF 💖</option>
+        <option value="bf">BF 💙</option>
+        <option value="friend">Friend 👫</option>
+        <option value="sister">Sister 👧</option>
+        <option value="brother">Brother 👦</option>
+        <option value="family">Family 👨‍👩‍👧</option>
+        <option value="trending">Trending 🔥</option>
+      </select>
+
+      <div id="wishList" class="wish-grid"></div>
+
+      <textarea id="message" placeholder="Or write your own wish..." rows="3"></textarea>
+
+      <input type="file" id="photo">
+
+      <button class="primary-btn" onclick="createWish()">✨ Generate Wish</button>
+
+      <p id="result"></p>
+    </div>
+
+    <hr>
+
+    <button class="primary-btn" onclick="loadMyWishes()">🔄 Load My Wishes</button>
+
+    <div id="myWishes" class="my-wish-grid"></div>
+
+  </div>
+
+  <!-- ✅ THEME SCRIPT (SAFE) -->
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+    }
+
+    // ✅ Load saved theme
+    if(localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+    }
+  </script>
+
+  <script src="script.js"></script>
+
+</body>
 </html>
     <div class="form-controls">
       <input id="from" placeholder="Your Name">
