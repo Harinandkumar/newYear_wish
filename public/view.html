@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -176,7 +176,7 @@ fetch(`/api/wish/${id}`)
 <script>
 function loadFallbackImage(){
   const img = document.getElementById("photo");
-  img.src = "/defaultimage.jpg";  // ✔️ your static image
+  img.src = "/defaultimage.jpg";  
 }
 </script>
 
@@ -309,6 +309,60 @@ function animate(){
 
 setInterval(createFirework,1500);
 animate();
+</script>
+
+<!-- ✅ ✅ ✅ VIEW UX ADD-ON (SAFE, NO OLD CODE TOUCHED) -->
+<script>
+function showToast(msg){
+  const t=document.createElement("div");
+  t.style.cssText="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:99999;opacity:0;transition:.3s";
+  t.innerText=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.style.opacity="1",50);
+  setTimeout(()=>{
+    t.style.opacity="0";
+    setTimeout(()=>t.remove(),300);
+  },2000);
+}
+
+function haptic(){
+  if(navigator.vibrate) navigator.vibrate(20);
+}
+
+const dlBtn=document.querySelector(".download-btn");
+if(dlBtn){
+  dlBtn.addEventListener("click",()=>{
+    haptic();
+    setTimeout(()=>showToast("✅ Wish saved to your device"),1200);
+  });
+}
+
+const copyBtn=document.createElement("button");
+copyBtn.className="download-btn";
+copyBtn.innerText="🔗 Copy Link";
+document.querySelector("#capture").appendChild(copyBtn);
+
+copyBtn.onclick=()=>{
+  haptic();
+  navigator.clipboard.writeText(location.href.replace("&owner=1",""));
+  showToast("✅ Link copied");
+};
+
+if(navigator.share){
+  const shareBtn=document.createElement("button");
+  shareBtn.className="download-btn";
+  shareBtn.innerText="📤 More Share";
+  document.querySelector("#capture").appendChild(shareBtn);
+
+  shareBtn.onclick=()=>{
+    haptic();
+    navigator.share({
+      title:"My Wish",
+      text:"See my beautiful wish 💖",
+      url:location.href.replace("&owner=1","")
+    });
+  };
+}
 </script>
 
 </body>
