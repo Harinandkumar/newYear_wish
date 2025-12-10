@@ -217,5 +217,94 @@
 
   <script src="script.js"></script>
 
+  <!-- ✅ ✅ ✅ UX ADD-ON (NO ORIGINAL CODE TOUCHED) -->
+  <style>
+    .ux-toast{
+      position:fixed;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#111;
+      color:#fff;
+      padding:10px 16px;
+      border-radius:12px;
+      font-size:14px;
+      z-index:99999;
+      opacity:0;
+      transition:.3s;
+    }
+    .ux-toast.show{opacity:1}
+
+    .skeleton-card{
+      height:120px;
+      border-radius:12px;
+      background:linear-gradient(90deg,#eee,#f5f5f5,#eee);
+      background-size:200% 100%;
+      animation:skeleton 1.2s infinite;
+    }
+    @keyframes skeleton{
+      0%{background-position:200% 0}
+      100%{background-position:-200% 0}
+    }
+  </style>
+
+  <script>
+    function showToast(msg){
+      const t=document.createElement("div");
+      t.className="ux-toast";
+      t.innerText=msg;
+      document.body.appendChild(t);
+      setTimeout(()=>t.classList.add("show"),50);
+      setTimeout(()=>{
+        t.classList.remove("show");
+        setTimeout(()=>t.remove(),300);
+      },2000);
+    }
+
+    function setBtnLoading(btn,loading){
+      if(!btn) return;
+      if(loading){
+        btn.dataset.oldText=btn.innerText;
+        btn.innerText="Please wait...";
+        btn.disabled=true;
+        btn.style.opacity=".7";
+      }else{
+        btn.innerText=btn.dataset.oldText || btn.innerText;
+        btn.disabled=false;
+        btn.style.opacity="1";
+      }
+    }
+
+    function haptic(){
+      if(navigator.vibrate) navigator.vibrate(20);
+    }
+
+    const genBtn=document.querySelector("button[onclick='createWish()']");
+    if(genBtn){
+      genBtn.addEventListener("click",()=>{
+        haptic();
+        setTimeout(()=>setBtnLoading(genBtn,true),10);
+        setTimeout(()=>setBtnLoading(genBtn,false),2500);
+        setTimeout(()=>showToast("✅ Wish created successfully"),2200);
+      });
+    }
+
+    const loadBtn=document.querySelector("button[onclick='loadMyWishes()']");
+    if(loadBtn){
+      loadBtn.addEventListener("click",()=>{
+        haptic();
+        const box=document.getElementById("myWishes");
+        if(box){
+          box.innerHTML=`
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+          `;
+        }
+        showToast("📜 Loading your wishes...");
+      });
+    }
+  </script>
+
 </body>
 </html>
