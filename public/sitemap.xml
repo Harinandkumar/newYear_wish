@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- ✅ Homepage -->
+  <url>
+    <loc>https://happy-new-year-wish.onrender.com/</loc>
+    <lastmod>2025-01-01</lastmod>
+    <priority>1.00</priority>
+  </url>
+
+  <!-- ✅ Sample Wish Page -->
+  <url>
+    <loc>https://happy-new-year-wish.onrender.com/view.html</loc>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- ✅ Login / Main App Page -->
+  <url>
+    <loc>https://happy-new-year-wish.onrender.com/dashboard.html</loc>
+    <priority>0.80</priority>
+  </url>
+
+</urlset>
