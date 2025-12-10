@@ -2,10 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>New Year Wish</title>
+
+  <!-- ✅ SEO TITLE -->
+  <title>Create New Year Wishes Online | Romantic & WhatsApp Shareable</title>
+
+  <!-- ✅ BASIC SEO -->
+  <meta name="description" content="Create beautiful romantic New Year wishes online with your name & photo. One-tap WhatsApp sharing. Free New Year wish generator 2025.">
+  <meta name="keywords" content="New Year Wishes, New Year Wish Generator, Romantic New Year Wishes, WhatsApp New Year Wish, Happy New Year 2025 Wishes">
+  <meta name="author" content="Happy New Year Wish App">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://happy-new-year-wish.onrender.com/">
+
+  <!-- ✅ MOBILE -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- ✅ OPEN GRAPH -->
+  <meta property="og:title" content="Create Magical New Year Wishes 💖">
+  <meta property="og:description" content="Generate romantic & personalized New Year wishes with photo, name & WhatsApp sharing.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://happy-new-year-wish.onrender.com/">
+  <meta property="og:image" content="https://happy-new-year-wish.onrender.com/preview.png">
+
+  <!-- ✅ TWITTER -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="New Year Wish Generator 2025">
+  <meta name="twitter:description" content="Create viral New Year wishes with your name, photo & WhatsApp sharing.">
+  <meta name="twitter:image" content="https://happy-new-year-wish.onrender.com/preview.png">
+
+  <!-- ✅ GOOGLE FONTS -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- ✅ STRUCTURED DATA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Happy New Year Wish Generator",
+    "url": "https://happy-new-year-wish.onrender.com/",
+    "description": "Create romantic and personalized New Year wishes online with WhatsApp sharing."
+  }
+  </script>
 
   <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
@@ -30,7 +66,6 @@
       position:relative;
     }
 
-    /* ✅ LANDING */
     .landing{
       padding:70px 40px;
       color:white;
@@ -49,7 +84,6 @@
       margin-bottom:30px;
     }
 
-    /* ✅ BOLD FEATURE CARDS */
     .features{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -100,7 +134,6 @@
       border:2px solid white;
     }
 
-    /* ✅ SAMPLE WISH MODAL */
     .sample{
       display:none;
       position:absolute;
@@ -121,11 +154,6 @@
       text-align:center;
       animation:pop .4s ease;
       overflow:hidden;
-    }
-
-    @keyframes pop{
-      from{transform:scale(.7);opacity:0}
-      to{transform:scale(1);opacity:1}
     }
 
     .sample-head{
@@ -170,7 +198,6 @@
       color:white;
     }
 
-    /* ✅ AUTH */
     .auth-wrapper{
       display:none;
       padding:60px 35px;
@@ -263,9 +290,8 @@
 
   <div class="container">
 
-    <!-- ✅ LANDING -->
     <div class="landing" id="landing">
-      <h1>🎆 Create Magical New Year Wishes</h1>
+      <h1>🎆 Create Romantic & Personalized New Year Wishes Online</h1>
       <p>Send beautiful romantic & personalized New Year wishes with just one click 💖</p>
 
       <div class="features">
@@ -283,15 +309,11 @@
       </div>
     </div>
 
-    <!-- ✅ SAMPLE PREVIEW (REAL UI EMBED) -->
     <div class="sample" id="sampleModal">
       <div class="sample-card">
         <div class="sample-head">💖 Sample New Year Wish Preview</div>
 
-        <iframe
-          class="sample-frame"
-          src="https://happy-new-year-wish.onrender.com/view.html?id=69392d7b528e4585075b9f42">
-        </iframe>
+        <iframe class="sample-frame" src="https://happy-new-year-wish.onrender.com/view.html?id=69392d7b528e4585075b9f42"></iframe>
 
         <div class="sample-actions">
           <button class="close" onclick="closeSample()">Close</button>
@@ -300,7 +322,6 @@
       </div>
     </div>
 
-    <!-- ✅ LOGIN / REGISTER -->
     <div class="auth-wrapper" id="auth">
 
       <div class="auth-card">
@@ -333,6 +354,11 @@
 
   </div>
 
+  <!-- ✅ HIDDEN SEO KEYWORD BOOST -->
+  <div style="display:none">
+    Create personalized New Year wishes online with your name and photo. Instantly share your Happy New Year 2025 wishes on WhatsApp, Facebook, and Instagram.
+  </div>
+
 <script>
 function openAuth(){
   landing.style.display="none";
@@ -348,10 +374,7 @@ function closeSample(){
 }
 
 function openInNewTab(){
-  window.open(
-    "https://happy-new-year-wish.onrender.com/view.html?id=69392d7b528e4585075b9f42",
-    "_blank"
-  );
+  window.open("https://happy-new-year-wish.onrender.com/view.html?id=69392d7b528e4585075b9f42","_blank");
 }
 
 function switchTab(tab){
